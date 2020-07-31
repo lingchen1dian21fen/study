@@ -133,6 +133,13 @@ class OneWayLinked(object):
             return 
         for val in link:
             self.append(val)
+            
+    
+    def reverse(self):        
+        """
+            优化单链表反转，时间为O(n)，空间为O(1)
+        """
+        pass
     
     def middle(self):
         if self._len == 0:

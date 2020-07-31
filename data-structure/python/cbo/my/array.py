@@ -12,7 +12,7 @@ Created on 2020-07-28 15:34
 '''
 
 
-class Array1(object):
+class DynamicArray(object):
     """
                 支持动态扩容的数组，数组：可以通过下标操作数据，有长度，可以遍历
     """  
@@ -39,6 +39,12 @@ class Array1(object):
     def __item__(self):
         for item in self._data:
             yield item
+            
+    def delete(self, index):
+        if index >= 0 and index < len(self._data):
+            self._data.remove(self._data[index])
+        else:
+            raise IndexError('array index out of range!')
     
     def get_datas(self):
         return self._data
@@ -46,7 +52,7 @@ class Array1(object):
     # 实现两个有序数组合并为一个有序数组
     def merge(self, array):
         d = self.get_datas() if len(self) >= len(array) else array.get_datas()
-        res = Array1(*d)
+        res = DynamicArray(*d)
         s = len(self._data) if len(self._data) <= len(array) else len(array)
         i = 0
         while i < s:
@@ -101,7 +107,7 @@ class Array2(object):
 
 
 def assert_array1():    
-    a1 = Array1()
+    a1 = DynamicArray()
     assert len(a1) == 0
     a1[2] = 1
     assert len(a1) == 3    
@@ -109,7 +115,7 @@ def assert_array1():
     assert len(a1) == 4
     for a in a1:
         print(a)
-    a2 = Array1('aa', 'bb', 'cc')
+    a2 = DynamicArray('aa', 'bb', 'cc')
     for a in a2:
         print(a)
     print('支持动态扩容的数组 断言结束！')    
@@ -147,11 +153,11 @@ def assert_array2():
     print('大小固定的有序数组 断言结束！')  
 
 def assert_array3():
-    a1 = Array1()
+    a1 = DynamicArray()
     a1[0] = 'aaa'
     a1[1] = 'bbb'
     a1[2] = 'ccc'
-    a2 = Array1()
+    a2 = DynamicArray()
     a2[1] = 'bbb'
     a2[2] = '444'
     a2[5] = 'ccc'
@@ -175,8 +181,6 @@ if __name__ == '__main__':
     assert_array2()
     # 实现两个有序数组合并为一个有序数组    
     assert_array3()
-    #a = []
-    #a[2] = 'aaa'
-    #print(a[0])
+
 
 
