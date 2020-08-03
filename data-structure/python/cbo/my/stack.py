@@ -23,22 +23,25 @@ class SequenceStack(object):
     def __len__(self):
         return len(self._data)
     
-    def __item__(self):
-        i = self.__len__() - 1
-        while i >= 0:
-            yield self._data[i]
-            i -= 1
+    def __iter__(self):
+        for d in self._data:
+            yield d
+        return None
      
     def push(self, value):
         self._data[self.__len__()] = value
         
-    def pop(self):    
-        val = self._data[self._len - 1]
-        self._data.delete(self._len - 1)
+    def pop(self):  
+        if self.__len__() == 0:
+            return None  
+        val = self._data[self.__len__() - 1]
+        self._data.delete(self.__len__() - 1)
         return val
     
     def peek(self):
-        return self._data[self._len - 1]
+        if self.__len__() == 0:
+            return None
+        return self._data[self.__len__() - 1]
 
 class LinkedStack(object):
     """
@@ -50,8 +53,10 @@ class LinkedStack(object):
     def __len__(self):
         return len(self._data)
     
-    def __item__(self):
-        pass
+    def __iter__(self):
+        for d in self._data:
+            yield d
+        return None
      
     def push(self, value):
         self._data.append(value)
@@ -72,19 +77,75 @@ class Browser(object):
         self._back = SequenceStack()
 
     def go_down(self):
+        if len(self._history) == 0:
+            return 
         self._back.push(self._curr)
         self._curr = self._history.pop()
+        return self._curr
     
     def go_up(self):
+        if len(self._back) == 0:
+            return
         self._history.push(self._curr)
         self._curr = self._back.pop()
+        return self._curr
 
     def browse(self, url):
         self._history.push(self._curr)
         self._curr = url
+        return self._curr
+        
+    def get(self):
+        return self._curr
 
-
-
-
+def assert_sequence():
+    stack = SequenceStack()
+    stack.push('aaa')
+    stack.push('bbb')
+    stack.push('ccc')
+    stack.push('ddd')
+    assert len(stack) == 4
+    assert stack.peek() == 'ddd'
+    assert stack.pop() == 'ddd'
+    assert stack.pop() == 'ccc'
+    assert len(stack) ==2
+    for data in stack:
+        print(data)
+    print('顺序栈 断言结束')
+    
+def assert_linked():
+    stack = LinkedStack()   
+    stack.push('aaa')
+    stack.push('bbb')
+    stack.push('ccc')
+    stack.push('ddd')
+    assert len(stack) == 4
+    assert stack.peek() == 'ddd'
+    assert stack.pop() == 'ddd'
+    assert stack.pop() == 'ccc'
+    assert len(stack) ==2
+    for data in stack:
+        print(data)
+    print('链式栈 断言结束') 
+    
+def assert_browser():
+    b = Browser('aaa')
+    b.browse('bbb')
+    b.browse('ccc')
+    assert b.get() == 'ccc'
+    assert b.go_up() == None
+    assert b.go_down() == 'bbb'
+    assert b.go_up() == 'ccc'
+    b.go_down()
+    b.go_down()
+    assert b.get() == 'aaa'
+    print('模拟浏览器 断言结束') 
+    
 if __name__ == '__main__':
-    pass
+    # 顺序栈
+    assert_sequence()
+    # 链式栈
+    assert_linked()
+    # 模拟浏览器
+    assert_browser()
+    

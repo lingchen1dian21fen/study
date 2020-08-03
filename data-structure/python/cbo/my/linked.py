@@ -228,6 +228,7 @@ class TwoWayLinked(object):
         self._last = temp._prev
         self._last._next = None
         temp._prev = None
+        self._len -= 1
         return val
 
     def remove(self, val):
