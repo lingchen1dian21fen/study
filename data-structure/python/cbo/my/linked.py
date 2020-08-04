@@ -81,8 +81,7 @@ class OneWayLinked(object):
             for i, val in enumerate(self):
                 if index == i:
                     return val
-        
-        
+    
     def pop(self):
         if self._len == 0:
             return None
@@ -195,6 +194,28 @@ class TwoWayLinked(object):
         if self._len == 0:
             return None
         return self._first._data
+    
+    def pop_first(self):
+        if self._len == 0:
+            return None
+        node = self._first
+        self._first = node._next
+        self._len -= 1
+        node._next = None
+        if self._len == 0:
+            self._last = None
+        return node._data
+    
+    def pop_last(self):
+        if self._len == 0:
+            return None
+        node = self._last
+        self._last = node._prev
+        self._len -= 1
+        node._prev = None
+        if self._len == 0:
+            self._first = None
+        return node._data
     
     def last(self):
         if self._len == 0:
