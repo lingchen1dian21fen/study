@@ -10,7 +10,6 @@ Created on 2020-08-06 14:28
             问题：编程实现一组数据集合的全排列    
 
 '''
-from test.test_audioop import datas
 
 def fibonacci(n):
     assert n >= 1
