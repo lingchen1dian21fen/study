@@ -67,9 +67,51 @@ def insert_sort(datas):
                 j -= 1            
         i += 1
 
-def quick_sort(datas):
-    pass
+def quick_sort(datas, l, r):
+    if l < r:
+        i, j = l, r
+        x = datas[i]
+        while i < j:
+            while i < j:
+                if datas[j] < x:
+                    datas[i] = datas[j]
+                    i += 1
+                    break
+                j -= 1
+            while i < j:        
+                if datas[i] > x:
+                    datas[j] = datas[i]
+                    j -= 1
+                    break
+                i += 1
+        datas[i] = x
+        quick_sort(datas, l, i - 1)
+        quick_sort(datas, i + 1, r)
 
+def find_k_val(datas, l, r, k):
+    if l < r:
+        i, j = l, r
+        x = datas[i]
+        while i < j:
+            while i < j:
+                if datas[j] > x:
+                    datas[i] = datas[j]
+                    i += 1
+                    break
+                j -= 1
+            while i < j:        
+                if datas[i] < x:
+                    datas[j] = datas[i]
+                    j -= 1
+                    break
+                i += 1
+        datas[i] = x
+        if i + 1 == k:
+            return datas[i]
+        elif i + 1 > k:
+            return find_k_val(datas, l, i - 1, k)
+        else:
+            return find_k_val(datas, i + 1, r, k)
 
 def assert_bubble():
     datas = [3, 5, 1, 8, 2, 4, 9, 6, 7]
@@ -106,10 +148,28 @@ def assert_insert():
     assert datas[8] == 9
     print(datas)
     print('插入排序  测试结束')
+    
+def assert_quick():
+    datas = [3, 5, 1, 8, 2, 4, 9, 6, 7]
+    quick_sort(datas, 0, len(datas) - 1)
+    assert datas[0] == 1
+    assert datas[4] == 5
+    assert datas[8] == 9
+    print(datas)
+    print('快速排序  测试结束')
+    
+def assert_k_val():
+    datas = [3, 5, 1, 8, 2, 4, 9, 6, 7]
+    assert find_k_val(datas, 0, len(datas)-1, 3) == 7
+    assert find_k_val(datas, 0, len(datas)-1, 8) == 2
+    print('第K大值  测试结束')    
 
 if __name__ == '__main__':
     assert_bubble()
     assert_selection()
     assert_merge()
     assert_insert()
+    assert_quick()
+    assert_k_val()
+    
     
